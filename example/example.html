@@ -29,6 +29,12 @@ charset=iso-8859-1"/>
   <script type="text/javascript">
     $(function() {
       $('.main li').selectable();
+      $('.main li').bind(jQuery.fn.selectable.UPDATE, function() {
+        var selected = $('.main li').selectable().selected();
+        var string = ''; //something is broken with jquery join on collections.
+        selected.each(function() { string += $(this).text() +' '});
+        $('#selected').text(string)
+      })
     })
   </script>
 </head>
