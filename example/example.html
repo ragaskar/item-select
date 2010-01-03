@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;.
+charset=iso-8859-1"/>
+  <meta http-equiv="Content-Language" content="en-us"/>
+  <title>selectable example</title>
+  <style type="text/css">
+    .main li {
+      display: block;
+      border: 1px solid black;
+      color: #000;
+    }
+
+    .main li.selected {
+      background: #222;
+      color: #fff;
+    }
+
+    .main li:hover {
+      background: #666;
+      color:#fff;
+    }
+
+  </style>
+  <script type="text/javascript" src="../lib/jquery-1.3.2.js"></script>
+  <script type="text/javascript" src="../lib/selectable.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      $('.main li').selectable();
+    })
+  </script>
+</head>
+<body>
+<ul class="main">
+  <li id="one">One</li>
+  <li id="two">Two</li>
+  <li id="three">Three</li>
+  <li id="four">Four</li>
+</ul>
+<div id="selected">
+</div>
+</body>
+</html>

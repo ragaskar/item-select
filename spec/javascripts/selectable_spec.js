@@ -30,7 +30,22 @@ describe('Selectable', function() {
   it('should track elements that have been selected', function() {
     $('.select').selectable();
     $('#select1').click();
-    expect($('.select').selectable().selected()).toEqual($('#select1'));
+    var selected = $('.select').selectable().selected();
+    expect(selected.length).toEqual(1);
+    expect(selected[0]).toEqual($('#select1')[0]);
+
+    $('#select2').click();
+    selected = $('.select').selectable().selected();
+    expect(selected.length).toEqual(2);
+    expect(selected[0]).toEqual($('#select1')[0]);
+    expect(selected[1]).toEqual($('#select2')[0]);
+
+    $('#select1').click();
+    selected = $('.select').selectable().selected();
+    expect(selected.length).toEqual(1);
+    expect(selected[0]).toEqual($('#select2')[0]);
+
+
   });
 
 });
