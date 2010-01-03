@@ -92,17 +92,36 @@ describe('Selectable', function() {
 
   it("should select multiple selectables when shift clicking", function() {
     $('.select').selectable();
-    var selectedSpy = jasmine.createSpy('selectedSpy');
-    $('.select').bind(jQuery.fn.selectable.UPDATE, selectedSpy);
+
     $('#select1').click();
     var selected = $('.select').selectable().selected();
     expect(selected.length).toEqual(1);
+    
     $('#select3').trigger({type:'click', shiftKey:true});
     selected = $('.select').selectable().selected();
     expect(selected.length).toEqual(3);
     expect(selected[0]).toEqual(select1);
     expect(selected[1]).toEqual(select2);
     expect(selected[2]).toEqual(select3);
+  });
+
+  it("should select multiple selectables when meta(ctrl) clicking", function() {
+    $('.select').selectable();
+
+    $('#select1').click();
+    var selected = $('.select').selectable().selected();
+    expect(selected.length).toEqual(1);
+
+    $('#select3').trigger({type:'click', metaKey:true});
+    selected = $('.select').selectable().selected();
+    expect(selected.length).toEqual(2);
+    expect(selected[0]).toEqual(select1);
+    expect(selected[1]).toEqual(select3);
+
+    $('#select1').trigger({type:'click', metaKey:true});
+    selected = $('.select').selectable().selected();
+    expect(selected.length).toEqual(1);
+    expect(selected[0]).toEqual(select3);
   });
 
   it("should handle single selectables after multiple", function() {
