@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html;.
 charset=iso-8859-1"/>
   <meta http-equiv="Content-Language" content="en-us"/>
-  <title>selectable example</title>
+  <title>item select example</title>
   <style type="text/css">
     .main li {
       display: block;
@@ -25,25 +25,31 @@ charset=iso-8859-1"/>
 
   </style>
   <script type="text/javascript" src="../lib/jquery-1.3.2.js"></script>
-  <script type="text/javascript" src="../lib/selectable.js"></script>
+  <script type="text/javascript" src="../lib/item-select.js"></script>
   <script type="text/javascript">
     $(function() {
-      $('.main li').selectable();
-      $('.main li').bind(jQuery.fn.selectable.UPDATE, function() {
-        var selected = $('.main li').selectable().selected();
+      $('.main li').itemSelect();
+      $('.main li').bind(jQuery.fn.itemSelect.UPDATE, function() {
+        var selected = $('.main li').itemSelect().selected();
         var string = ''; //something is broken with jquery join on collections.
         selected.each(function() { string += $(this).text() +' '});
         $('#selected').text(string)
+      })
+      $('#clear').click(function() {
+        $('.main li').itemSelect().clear();
       })
     })
   </script>
 </head>
 <body>
+<div><a href="#" id="clear">Clear</a></div>
 <ul class="main">
   <li id="one">One</li>
   <li id="two">Two</li>
   <li id="three">Three</li>
   <li id="four">Four</li>
+  <li id="five">Five</li>
+  <li id="six">Six</li>
 </ul>
 <div id="selected">
 </div>
