@@ -1,14 +1,16 @@
 describe('Selectable', function() {
-  var fixture, select1, select2;
+  var fixture, select1, select2, select3;
   beforeEach(function() {
     $('#jasmine_content').html('');
     fixture = $('<ul id="container">' +
                 '<li id="select1" class="select">select1</li>' +
                 '<li id="select2" class="select">select2</li>' +
+                '<li id="select3" class="select">select3</li>' +
                 '</ul>');
     $('#jasmine_content').html(fixture);
     select1 = $('#select1')[0];
     select2 = $('#select2')[0];
+    select3 = $('#select3')[0];
   });
 
   it('should add a class to selected items', function() {
@@ -20,7 +22,16 @@ describe('Selectable', function() {
     expect($('#select2').hasClass('selected')).toBe(false);
   });
 
-  it('should remove a class on selected items', function() {
+  it('should remove a class on other items', function() {
+    $('.select').selectable();
+    expect($('#select1').hasClass('selected')).toBe(false);
+    $('#select1').click();
+    expect($('#select1').hasClass('selected')).toBe(true);
+    $('#select2').click();
+    expect($('#select1').hasClass('selected')).toBe(false);
+  });
+
+  it('should deselect', function() {
     $('.select').selectable();
     expect($('#select1').hasClass('selected')).toBe(false);
     $('#select1').click();
@@ -38,14 +49,13 @@ describe('Selectable', function() {
 
     $('#select2').click();
     selected = $('.select').selectable().selected();
-    expect(selected.length).toEqual(2);
-    expect(selected[0]).toEqual(select1);
-    expect(selected[1]).toEqual(select2);
+    expect(selected.length).toEqual(1);
+    expect(selected[0]).toEqual(select2);
 
     $('#select1').click();
     selected = $('.select').selectable().selected();
     expect(selected.length).toEqual(1);
-    expect(selected[0]).toEqual(select2);
+    expect(selected[0]).toEqual(select1);
   });
 
   it("should fire an event on selection", function() {
@@ -78,6 +88,50 @@ describe('Selectable', function() {
     $('#select1').click();
     expect(selectedSpy).wasCalled();
     expect(selectedSpy.mostRecentCall.args[0].target).toEqual(select1);
+  });
+
+  it("should select multiple selectables when shift clicking", function() {
+    $('.select').selectable();
+    var selectedSpy = jasmine.createSpy('selectedSpy');
+    $('.select').bind(jQuery.fn.selectable.UPDATE, selectedSpy);
+    $('#select1').click();
+    var selected = $('.select').selectable().selected();
+    expect(selected.length).toEqual(1);
+    $('#select3').trigger({type:'click', shiftKey:true});
+    selected = $('.select').selectable().selected();
+    expect(selected.length).toEqual(3);
+    expect(selected[0]).toEqual(select1);
+    expect(selected[1]).toEqual(select2);
+    expect(selected[2]).toEqual(select3);
+  });
+
+  it("should handle single selectables after multiple", function() {
+    $('.select').selectable();
+    var selectedSpy = jasmine.createSpy('selectedSpy');
+    $('.select').bind(jQuery.fn.selectable.UPDATE, selectedSpy);
+    $('#select1').click();
+    var selected = $('.select').selectable().selected();
+    expect(selected.length).toEqual(1);
+    $('#select3').trigger({type:'click', shiftKey:true});
+    selected = $('.select').selectable().selected();
+    expect(selected.length).toEqual(3);
+    $('#select1').click();
+    selected = $('.select').selectable().selected();    
+    expect(selected.length).toEqual(1);    
+  });
+
+  it("should be possible to clear all selectables", function() {
+    $('.select').selectable();
+    $('#select1').click();
+    expect($('.select').selectable().selected().length).toEqual(1);
+    $('.select').selectable().clear();
+    expect($('.select').selectable().selected().length).toEqual(0);
+    $('#select1').click();
+    expect($('.select').selectable().selected().length).toEqual(1);
+    $('#select3').trigger({type:'click', shiftKey:true});
+    expect($('.select').selectable().selected().length).toEqual(3);
+    $('.select').selectable().clear();
+    expect($('.select').selectable().selected().length).toEqual(0);
   });
 
 });
