@@ -24,6 +24,17 @@ describe('Selectable', function() {
     expect($('#select2').hasClass('selected')).toBe(false);
   });
 
+  it('should prevent mousedown events from bubbling, so text is not marked as selected', function() {
+    var mouseDownSpy = jasmine.createSpy('mouseDownSpy');
+    $('#container').mousedown(mouseDownSpy);
+    $('#select1').mousedown();
+    expect(mouseDownSpy).wasCalled();
+    mouseDownSpy.reset();
+    $('.select').itemSelect();
+    $('#select1').mousedown();
+    expect(mouseDownSpy).wasNotCalled();    
+  });
+
   it('should remove a class on other items', function() {
     $('.select').itemSelect();
     expect($('#select1').hasClass('selected')).toBe(false);
