@@ -15,6 +15,10 @@ describe('ItemSelect', function() {
     select4 = $('#select4')[0];
   });
 
+  afterEach(function() {
+    $('#jasmine_content').html(null);
+  });
+
   describe("after application", function() {
 
     beforeEach(function() {
@@ -218,8 +222,21 @@ describe('ItemSelect', function() {
 
     });
 
+    it("should be possible to add elements", function() {
+      //TODO: This should really be selectable.add() -- you should always store your selectable ref.
+      $('#select1').click();
+      expect(selectables.selected().length).toEqual(1);
+      fixture.append($('<li id="select5" class="select">select5</li>'));
+      var newSelectables = $('.select').itemSelect();
+      $('#select5').trigger({type:'click', shiftKey:true});
+
+      expect(selectables.selected().length).toEqual(4);
+      expect(newSelectables.selected().length).toEqual(5);
+    });
+
 
   });
+
 
   it('should prevent mousedown events from bubbling, so text is not marked as selected', function() {
     var mouseDownSpy = jasmine.createSpy('mouseDownSpy');
