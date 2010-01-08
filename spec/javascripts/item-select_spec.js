@@ -14,6 +14,7 @@ describe('ItemSelect', function() {
     select3 = $('#select3')[0];
     select4 = $('#select4')[0];
   });
+
   describe("after application", function() {
 
     beforeEach(function() {
@@ -190,6 +191,11 @@ describe('ItemSelect', function() {
       expect(selectables.selected().length).toEqual(3);
       selectables.clear();
       expect(selectables.selected().length).toEqual(0);
+    });
+
+    it("should be possible to select all selectables", function() {
+      selectables.all();
+      expect(selectables.selected().length).toEqual(4);
     });
 
     it("should be possible to disable selectables", function() {
