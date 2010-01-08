@@ -57,18 +57,17 @@ describe('ItemSelect', function() {
       expect(selected[0]).toEqual($('#select1')[0]);
 
       $('#select2').click();
-      selected = $('.select').itemSelect().selected();
+      selected = selectables.selected();
       expect(selected.length).toEqual(1);
       expect(selected[0]).toEqual(select2);
 
       $('#select1').click();
-      selected = $('.select').itemSelect().selected();
+      selected = selectables.selected();
       expect(selected.length).toEqual(1);
       expect(selected[0]).toEqual(select1);
     });
 
     it("should fire an event on selection", function() {
-      $('.select').itemSelect();
       var selectedSpy = jasmine.createSpy('selectedSpy');
       $('.select').bind(jQuery.fn.itemSelect.SELECTED, selectedSpy);
       $('#select1').click();
@@ -77,7 +76,6 @@ describe('ItemSelect', function() {
     });
 
     it("should fire an event on de-selection", function() {
-      $('.select').itemSelect();
       var selectedSpy = jasmine.createSpy('selectedSpy');
       $('.select').bind(jQuery.fn.itemSelect.UNSELECTED, selectedSpy);
       $('#select1').click();
@@ -100,14 +98,12 @@ describe('ItemSelect', function() {
     });
 
     it("should select multiple selectables when shift clicking", function() {
-      $('.select').itemSelect();
-
       $('#select1').click();
-      var selected = $('.select').itemSelect().selected();
+      var selected = selectables.selected();
       expect(selected.length).toEqual(1);
 
       $('#select3').trigger({type:'click', shiftKey:true});
-      selected = $('.select').itemSelect().selected();
+      selected = selectables.selected();
       expect(selected.length).toEqual(3);
       expect(selected[0]).toEqual(select1);
       expect(selected[1]).toEqual(select2);
@@ -151,8 +147,6 @@ describe('ItemSelect', function() {
     });
 
     it("should select multiple selectables when meta(ctrl) clicking", function() {
-      $('.select').itemSelect();
-
       $('#select1').click();
       var selected = $('.select').itemSelect().selected();
       expect(selected.length).toEqual(1);
@@ -170,9 +164,6 @@ describe('ItemSelect', function() {
     });
 
     it("should handle single selectables after multiple", function() {
-      $('.select').itemSelect();
-      var selectedSpy = jasmine.createSpy('selectedSpy');
-      $('.select').bind(jQuery.fn.itemSelect.UPDATE, selectedSpy);
       $('#select1').click();
       var selected = selectables.selected();
       expect(selected.length).toEqual(1);
@@ -202,7 +193,7 @@ describe('ItemSelect', function() {
       expect(selectables.selected().length).toEqual(4);
     });
 
-    it("should be possible to disable selectables", function() {
+   it("should be possible to disable selectables", function() {
       selectables.disable();
       $('#select1').click();
       expect(selectables.selected().length).toEqual(0);
@@ -220,18 +211,6 @@ describe('ItemSelect', function() {
       expect(selectables.selected().length).toEqual(1);
       expect($('#select1').hasClass('selected')).toBe(true);
 
-    });
-
-    it("should be possible to add elements", function() {
-      //TODO: This should really be selectable.add() -- you should always store your selectable ref.
-      $('#select1').click();
-      expect(selectables.selected().length).toEqual(1);
-      fixture.append($('<li id="select5" class="select">select5</li>'));
-      var newSelectables = $('.select').itemSelect();
-      $('#select5').trigger({type:'click', shiftKey:true});
-
-      expect(selectables.selected().length).toEqual(4);
-      expect(newSelectables.selected().length).toEqual(5);
     });
 
 
