@@ -193,7 +193,7 @@ describe('ItemSelect', function() {
       expect(selectables.selected().length).toEqual(4);
     });
 
-   it("should be possible to disable selectables", function() {
+    it("should be possible to disable selectables", function() {
       selectables.disable();
       $('#select1').click();
       expect(selectables.selected().length).toEqual(0);
@@ -213,6 +213,19 @@ describe('ItemSelect', function() {
 
     });
 
+    it("should be possible to remove elements", function() {
+      $('#select2').addClass('remove');
+      $('#select3').addClass('remove');
+      selectables.remove($('.remove'));
+      $('#select1').click();
+      $('#select4').trigger({type:'click', shiftKey:true});
+      expect(selectables.selected().length).toEqual(2);
+      var ids = [];
+      selectables.selected().each(function() {
+        ids.push(this.id)
+      })
+      expect(ids).toEqual(['select1', 'select4']);
+    });
 
   });
 
